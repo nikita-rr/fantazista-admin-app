@@ -1,0 +1,21 @@
+{
+  "name": "fantazista",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server:build": "npm run build -w server",
+    "server:dev": "npm run dev -w server",
+    "client:build": "npm run build -w client",
+    "client:dev": "npm run dev -w client"
+  },
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "devDependencies": {
+    "@types/node": "18.16.12"
+  }
+}

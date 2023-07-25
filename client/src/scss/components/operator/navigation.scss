@@ -1,0 +1,11 @@
+.operator-navigation {
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  background-color: getCssVar('bg-color');
+  &__logo {
+    width: 35px;
+    display: flex;
+    align-items: center;
+  }
+}

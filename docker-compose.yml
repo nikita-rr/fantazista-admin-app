@@ -1,0 +1,47 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:13.3
+    container_name: f10-postgres-dev
+    environment:
+      POSTGRES_DB: 'f10_admin'
+      POSTGRES_USER: 'f10_admin'
+      POSTGRES_PASSWORD: 'aE6rFgU7g*NZha&k'
+    networks:
+      - f10net
+    
+  nest-api:
+    image: f10-nest-api:dev
+    container_name: f10-nest-api-dev
+    depends_on:
+      - postgres
+    build:
+      context: ./server
+    restart: always
+    environment:
+      SERVER_PORT: '3000'
+      DATABASE_URL: 'postgresql://f10_admin:aE6rFgU7g*NZha&k@postgres:5432/f10_admin?schema=public'
+      AUTH_SECRET: 'AKxQ21pcX'
+      SESSION_SECRET: 'kljLHHGYWq1'
+    networks:
+      - f10net
+
+  web:
+    image: f10-web:dev
+    container_name: f10-web-dev
+    depends_on:
+      - nest-api
+      - postgres
+    build:
+      context: ./client
+    restart: always
+    ports:
+      - '8081:80'
+    networks:
+      - f10net
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+
+networks:
+  f10net:

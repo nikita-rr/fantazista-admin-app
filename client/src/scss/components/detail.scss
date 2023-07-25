@@ -1,0 +1,12 @@
+.detail {
+  &__item {
+    border-left: 1px solid gray;
+    padding-left: 10px;
+  }
+  &__files {
+    &-item {
+      min-width: 300px;
+      margin: 0 10px 10px 0;
+    }
+  }
+}

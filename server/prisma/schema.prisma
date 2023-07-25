@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String     @id @default(dbgenerated("gen_random_uuid()"))
+  created_at DateTime   @default(now())
+  login      String     @unique
+  password   String
+  role       Role       @default(ADMIN)
+  deleted_at DateTime?
+  clients    Client[]
+  contracts  Contract[]
+  tables     Table[]
+}
+
+enum Role {
+  ADMIN
+  OPERATOR
+}
+
+model Client {
+  id         String     @id @default(dbgenerated("gen_random_uuid()"))
+  creator    User?      @relation(fields: [creatorId], references: [id], onDelete: SetNull)
+  creatorId  String?
+  created_at DateTime   @default(now())
+  deleted_at DateTime?
+  f          String
+  i          String
+  o          String
+  tax_status String
+  inn        String
+  ogrn       String
+  Contract   Contract[]
+}
+
+model Contract {
+  id           String         @id @default(dbgenerated("gen_random_uuid()"))
+  creator      User?          @relation(fields: [creatorId], references: [id], onDelete: SetNull)
+  creatorId    String?
+  created_at   DateTime       @default(now())
+  deleted_at   DateTime?
+  client       Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId     String
+  number       String
+  date         DateTime
+  client_brand String?
+  summ         Float
+  legal_entity String?
+  files        ContractFile[]
+  tables       Table[]
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt DateTime
+}
+
+model ContractFile {
+  id            String    @id @default(dbgenerated("gen_random_uuid()"))
+  created_at    DateTime  @default(now())
+  deleted_at    DateTime?
+  contract      Contract  @relation(fields: [contractId], references: [id])
+  contractId    String
+  target_path   String
+  size          Float
+  extension     String
+  original_name String
+  mimetype      String
+}
+
+model Table {
+  id         String    @id @default(dbgenerated("gen_random_uuid()"))
+  type       String?
+  lat        Float
+  lon        Float
+  contract   Contract  @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  contractId String
+  created_at DateTime  @default(now())
+  deleted_at DateTime?
+  creator    User?     @relation(fields: [creatorId], references: [id], onDelete: SetNull)
+  creatorId  String?
+}

@@ -1,0 +1,14 @@
+stages:
+    - deploy
+
+step-develop:
+    stage: deploy
+    only:
+      - main
+    tags: 
+        - dev
+        - beget
+    script:
+        - docker image prune -f
+        - docker compose build --no-cache
+        - docker compose up -d --remove-orphans

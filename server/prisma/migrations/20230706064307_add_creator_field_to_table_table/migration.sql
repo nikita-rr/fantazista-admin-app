@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE "Table" ADD COLUMN     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "creatorId" TEXT,
+ADD COLUMN     "deleted_at" TIMESTAMP(3);
+
+-- AddForeignKey
+ALTER TABLE "Table" ADD CONSTRAINT "Table_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

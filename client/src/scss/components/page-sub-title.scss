@@ -1,0 +1,22 @@
+.page-sub-title {
+  background-color: getCssVar('bg-color');
+  position: sticky;
+  top: 72px;
+  z-index: 98;
+  margin-bottom: 20px;
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-bottom: solid 1px getCssVar('menu', 'border-color');
+  }
+  &__title {
+    display: block;
+    margin: 10px 0;
+  }
+  &__actions {
+    display: block;
+    margin: 10px 0;
+  }
+}
